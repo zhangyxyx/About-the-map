@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>离线地图</title>
+    <!-- <script type="text/javascript" src="js/apiv3.0_street.js"></script>
+    <script type="text/javascript" src="js/AreaRestriction.js"></script>
+    <script type="text/javascript" src="js/DrawingManager_one_rect.js"></script>
+    <link rel="stylesheet" href="style/DrawingManager.css" /> -->
+    <!--script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script-->
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+</head>
+<body>
+    <div class="container" id="map_container"></div>
+</body>
+</html>
+<script type="text/javascript" src="js/index.js"></script>
+<script src="./js/data.js"></script>
+<script type="text/javascript">
+    //map()
+    //渲染地图
+    function map(result) {
+        var map = new BMap.Map("map_container");
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+        map.setMapStyleV2({ styleJson: styleJson });
+        map.addControl(new BMap.NavigationControl());
+        map.enableScrollWheelZoom();
+        //C#调用，开始画范围
+        function OpenDrawRect() {
+            drawingManager.open();
+            drawingManager.setDrawingMode(BMAP_DRAWING_RECTANGLE);
+            return;
+        }
+        //C#调用，结束画范围
+        function CloseDrawRect() {
+            drawingManager.close();
+            return;
+        }
+    }
+    //rendermap()
+    function rendermap(){
+        var map = new maptalks.Map('map_container', {
+          center:[116.401969,39.921797],
+          zoom:12,
+          //allow map to drag pitching, true by default
+          dragPitch : true,
+          //allow map to drag rotating, true by default
+          dragRotate : true,
+          //enable map to drag pitching and rotating at the same time, false by default
+          dragRotatePitch : true,
+          spatialReference:{
+            projection : 'baidu'
+          },
+          baseLayer: new maptalks.TileLayer('base', {
+            //urlTemplate: 'http://192.168.5.104:8081/tiles/{z}/{x}/{y}.png',
+            urlTemplate: 'http://192.168.5.104:8081/baidumap/maptile/{z}/{x}/{y}.png',
+            subdomains: ['a','b','c'],
+            attribution: '&copy; <a href="http://www.osm.org" target="_blank">OpenStreetMap</a> contributors',
+            cssFilter : 'sepia(100%) invert(90%)'
+          }),
+        });
+        var center = map.getCenter();
+        var sector = new maptalks.Sector(center.add(116.401969-116.325088,39.977269-39.921797), 900, 240, 300, {
+        symbol: {
+          lineColor: '#34495e',
+          lineWidth: 2,
+          polygonFill: 'rgb(135,196,240)',
+          polygonOpacity: 0.4
+        },
+        properties : {
+          altitude : 600
+        }
+        
+      });
+      var layer = new maptalks.VectorLayer('vector', { enableAltitude : true })
+        .addGeometry([sector])
+        .addTo(map);
+    }
+    rendermap2()
+    function rendermap2(){
+      var map = new maptalks.Map('map_container', {
+        center: [116.401969,39.921797],
+        zoom: 14,
+        pitch : 56,
+        bearing : 60,
+        spatialReference:{
+            projection : 'baidu'
+          },
+        baseLayer: new maptalks.TileLayer('base', {
+          urlTemplate: 'http://192.168.5.104:8081/baidumap/maptile/{z}/{x}/{y}.png',
+          subdomains: ['a','b','c'],
+          attribution: '&copy; <a href="http://www.osm.org" target="_blank">OpenStreetMap</a> contributors'
+        })
+      });
+
+      var line = new maptalks.LineString([
+        [116.325088,39.977269],
+        [116.325294,39.977296],
+        [116.325555,39.97713],
+        [116.325586,39.976951],
+        [116.325519,39.976844],
+        [116.325353,39.976788],
+        [116.325353,39.97674],
+        [116.325155,39.976733],
+        [116.325088,39.977282],
+      ], {
+        symbol: {
+          'lineColor' : '#1bbc9b',
+          'lineWidth' : 3
+        },
+        properties : {
+          'altitude' : [300, 300, 300, 300, 300, 300, 300, 300, 300]
+        }
+      });
+
+      new maptalks.VectorLayer('vector', [line], { enableAltitude : true, drawAltitude : {
+        polygonFill : '#1bbc9b',
+        polygonOpacity : 0.3,
+        lineWidth : 0
+      }}).addTo(map);
+    }
+</script>
