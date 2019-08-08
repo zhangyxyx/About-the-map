@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>glTF 模型</title>
+    <style>
+        html,
+        body,
+        #container {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cc {
+            position: absolute;
+            color: #000000;
+            bottom: 10px;
+            left: 10px;
+        }
+    </style>
+    <script>
+        delete window.AMap;
+    </script>
+</head>
+<body onLoad="mapInit()">
+<div id="container"></div>
+<div class="cc">shanghai city 3D models by Michael Zhang /
+    <a target='_blank' href="https://creativecommons.org/licenses/by/2.0/">CC BY </a>
+</div>
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=d937e71a6393cace54102a4f22b418fd&plugin=Map3D"></script>
+<script>
+    function mapInit() {
+        // 创建地图实例
+        var map = new AMap.Map("container", {
+            viewMode: '3D',
+            pitch: 30,
+            rotation: 25,
+            zoom: 16,
+            center: [121.499809, 31.236666],
+            mapStyle: 'amap://styles/macaron',
+            showIndoorMap: false
+        });
+
+        // 创建Object3DLayer图层
+        var object3Dlayer = new AMap.Object3DLayer();
+        map.add(object3Dlayer);
+
+        map.plugin(["AMap.GltfLoader"], function () {
+            //var urlCity = 'https://a.amap.com/jsapi_demos/static/gltf-online/shanghai/scene.gltf';
+            var urlDuck = 'https://a.amap.com/jsapi_demos/static/gltf/Duck.gltf';
+            var urlCity = 'model.gltf';
+
+            var paramCity = {
+                position: new AMap.LngLat(121.510909, 31.233366), // 必须
+                scale: 3580, // 非必须，默认1
+                height: 1800,  // 非必须，默认0
+                scene: 0, // 非必须，默认0
+            };
+
+            var paramDuck = {
+                position: new AMap.LngLat(121.495000, 31.233366), // 必须
+                scale: 800, // 非必须，默认1
+                height: -100,  // 非必须，默认0
+                scene: 0, // 非必须，默认0
+            };
+
+            var gltfObj = new AMap.GltfLoader();
+
+            gltfObj.load(urlCity, function (gltfCity) {
+                gltfCity.setOption(paramCity);
+                gltfCity.rotateX(90);
+                gltfCity.rotateZ(120);
+                object3Dlayer.add(gltfCity);
+            });
+
+            gltfObj.load(urlDuck, function (gltfDuck) {
+                gltfDuck.setOption(paramDuck);
+                gltfDuck.rotateX(90);
+                gltfDuck.rotateZ(-20);
+                object3Dlayer.add(gltfDuck);
+            });
+
+        });
+    }
+</script>
+</body>
+</html>
