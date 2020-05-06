@@ -46,3 +46,4 @@
     显示下载最新的城市的json文件：http://datav.aliyun.com/tools/atlas/#&lat=33.521903996156105&lng=104.29849999999999&zoom=4</br>
     比如当前是将两个城市合并成一个城市，那就把两个json文件手动合并在一起，但是手动合并肯定会有重合的线段，这时候需要用</br>
     https://mapshaper.org/将json文件引入到这个网页，然后打开控制台console，输入命令-clean就可以将重合的线段去掉了</br>
+    mapshaper命令
