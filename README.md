@@ -45,5 +45,5 @@
 1. 当使用echarts的创建地图的时候，地图文件不是最新的，所以可能造成误差,所以需要对现有的地图数据进行合并和修改：
     显示下载最新的城市的json文件：http://datav.aliyun.com/tools/atlas/#&lat=33.521903996156105&lng=104.29849999999999&zoom=4</br>
     比如当前是将两个城市合并成一个城市，那就把两个json文件手动合并在一起，但是手动合并肯定会有重合的线段，这时候需要用</br>
-    https://mapshaper.org/将json文件引入到这个网页，然后打开控制台console，输入命令-clean就可以将重合的线段去掉了</br>
+    官网https://mapshaper.org/将json文件引入到这个网页，然后打开控制台console，输入命令-clean就可以将重合的线段去掉了</br>
     mapshaper命令：-clip<裁剪>
